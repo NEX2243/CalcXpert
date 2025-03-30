@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="teste javascript.css">
+</head>
+<body>
+
+    <div class="calculadora">
+        <h1>Calculadora</h1>
+
+        <div class="input-group">
+            <label for="numero1">Digite o primeiro número (a):</label>
+            <input type="number" id="numero1" placeholder="Digite um número">
+        </div>
+
+        <div class="input-group" id="grupoNumero2">
+            <label for="numero2">Digite o segundo número (b):</label>
+            <input type="number" id="numero2" placeholder="Digite outro número">
+        </div>
+
+        <div class="input-group" id="grupoNumero3">
+            <label for="numero3">Digite o terceiro número (c):</label>
+            <input type="number" id="numero3" placeholder="Digite outro número">
+        </div>
+
+        <div class="input-group">
+            <label for="operacao">Escolha a operação:</label>
+            <select id="operacao" onchange="verificarCampos()">
+                <option value="somar">Somar</option>
+                <option value="subtrair">Subtrair</option>
+                <option value="multiplicar">Multiplicar</option>
+                <option value="dividir">Dividir</option>
+                <option value="potencia">Potência</option>
+                <option value="raiz">Raiz quadrada</option>
+                <option value="equacao">Equação de primeiro grau (ax + b = 0)</option>
+            </select>
+        </div>
+
+        <button onclick="calcular()">Calcular</button>
+
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        function verificarCampos() {
+            let operacao = document.getElementById("operacao").value;
+            let grupoNumero2 = document.getElementById("grupoNumero2");
+            let grupoNumero3 = document.getElementById("grupoNumero3");
+
+            if (operacao === "raiz") {
+                grupoNumero2.style.display = "none";
+                grupoNumero3.style.display = "none";
+            } else if (operacao === "equacao") {
+                grupoNumero2.style.display = "block";
+                grupoNumero3.style.display = "none";
+            } else {
+                grupoNumero2.style.display = "block";
+                grupoNumero3.style.display = "block";
+            }
+        }
+
+        function calcular() {
+            let operacao = document.getElementById("operacao").value;
+            let x = parseFloat(document.getElementById("numero1").value);
+            let y = parseFloat(document.getElementById("numero2").value);
+            let z = parseFloat(document.getElementById("numero3").value);
+            let resultado;
+
+            if (isNaN(x)) {
+                resultado = "⚠️ Por favor, insira um número válido.";
+            } else {
+                switch (operacao) {
+                    case "somar":
+                        resultado = `➕ O resultado da soma é: ${x + y}`;
+                        break;
+                    case "subtrair":
+                        resultado = `➖ O resultado da subtração é: ${x - y}`;
+                        break;
+                    case "multiplicar":
+                        resultado = `✖️ O resultado da multiplicação é: ${x * y}`;
+                        break;
+                    case "dividir":
+                        resultado = y === 0 ? "❌ Erro: divisão por zero!" : `➗ O resultado da divisão é: ${x / y}`;
+                        break;
+                    case "potencia":
+                        resultado = `🔢 O resultado da potência é: ${x ** y}`;
+                        break;
+                    case "raiz":
+                        resultado = x < 0 ? "❌ Erro: número negativo não tem raiz real!" : `√ O resultado da raiz quadrada é: ${Math.sqrt(x)}`;
+                        break;
+                    case "equacao":
+                        if (x === 0) {
+                            resultado = y === 0 ? "A equação tem infinitas soluções." : "A equação não tem solução.";
+                        } else {
+                            let solucao = -y / x;
+                            resultado = `A solução da equação ${x}x + ${y} = 0 é: x = ${solucao}`;
+                        }
+                        break;
+                    default:
+                        resultado = "⚠️ Operação inválida.";
+                }
+            }
+
+            document.getElementById("resultado").textContent = resultado;
+        }
+    </script>
+
+</body>
+</html>
